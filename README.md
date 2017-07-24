@@ -1,2 +1,2 @@
 # notepad-api
-Serverless Notepad API
+AWS SAM Notepad API

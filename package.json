@@ -4,7 +4,10 @@
   "description": "A Notepad API",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ."
+    "build": "npm install && npm prune --production",
+    "cloudformation::package": "aws cloudformation package --template-file ./sam.yaml --output-template-file ./sam-out.yaml --s3-bucket deployer-build",
+    "cloudformation::deploy": "aws cloudformation deploy --template-file ./sam-out.yaml --stack-name notepad-api --capabilities CAPABILITY_IAM",
+    "deploy": "npm run build && npm run cloudformation::package && npm run cloudformation::deploy"
   },
   "repository": {
     "type": "git",
