@@ -16,7 +16,7 @@ Resources:
   ResourceHandler:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.handler
+      Handler: src/notepad.handler
       Runtime: nodejs6.10
       Environment:
         Variables:
@@ -25,26 +25,26 @@ Resources:
         GetNote:
           Type: Api
           Properties:
-            Path: /note/{noteId}
+            Path: /notepad/{noteId}
             Method: GET
         ListNotes:
           Type: Api
           Properties:
-            Path: /notes
+            Path: /notepad
             Method: GET
         CreateNote:
           Type: Api
           Properties:
-            Path: /note
+            Path: /notepad
             Method: POST
         UpdateNote:
           Type: Api
           Properties:
-            Path: /note/{noteId}
+            Path: /notepad/{noteId}
             Method: PUT
         DeleteNote:
           Type: Api
           Properties:
-            Path: /note/{noteId}
+            Path: /notepad/{noteId}
             Method: DELETE
 

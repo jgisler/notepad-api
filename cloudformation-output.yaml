@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  NotesTable:
+    Properties:
+      PrimaryKey:
+        Name: noteId
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+    Type: AWS::Serverless::SimpleTable
+  ResourceHandler:
+    Properties:
+      CodeUri: s3://deployer-build/d71b98d2d964ff33580c4e9288c63d13
+      Environment:
+        Variables:
+          NOTES_TABLE:
+            Ref: NotesTable
+      Events:
+        CreateNote:
+          Properties:
+            Method: POST
+            Path: /note
+          Type: Api
+        DeleteNote:
+          Properties:
+            Method: DELETE
+            Path: /note/{noteId}
+          Type: Api
+        GetNote:
+          Properties:
+            Method: GET
+            Path: /note/{noteId}
+          Type: Api
+        ListNotes:
+          Properties:
+            Method: GET
+            Path: /notes
+          Type: Api
+        UpdateNote:
+          Properties:
+            Method: PUT
+            Path: /note/{noteId}
+          Type: Api
+      Handler: index.handler
+      Runtime: nodejs6.10
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

@@ -1,14 +1,11 @@
 /* jshint esversion: 6, node: true */
 const AWS = require('aws-sdk');
 
-exports.handler = handleEvent;
+function handleRequest(request, context, callback) {
 
-function handleEvent(event, context, callback) {
-
-    console.log(`event=${JSON.stringify(event, null, 2)}`);
-
-    const resource = event.resource;
-    const httpMethod = event.httpMethod.toLowerCase();
+    const resource = request.resource;
+    const httpMethod = request.httpMethod.toLowerCase();
+    log("request", `${httpMethod} ${resource}`);
 
     switch (resource) {
         case "/note/{noteId}":
@@ -16,6 +13,7 @@ function handleEvent(event, context, callback) {
                 case 'get':
                     callback(null, handleGet(event.pathParameters.noteId) );
                     break;
+
                 default:
                     callback(buildResponse(501, {message: 'Not implemented'}));
             }
@@ -36,3 +34,9 @@ function buildResponse(statusCode, responseBody) {
 function handleGet(noteId) {
     return buildResponse(200, {note: {noteId: noteId}});
 }
+
+function log(name, value) {
+    console.log(`${name}=${JSON.stringify(value, null, 2)}`);
+}
+
+exports.handler = handleEvent;
