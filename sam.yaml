@@ -16,7 +16,11 @@ Resources:
   NotepadApiFunction:
     Type: AWS::Serverless::Function
     Properties:
+<<<<<<< HEAD
       Handler: src/notepadApiRouter.handler
+=======
+      Handler: src/notepad.handler
+>>>>>>> c227c83be7088d7aeb27b862877a5bca2f5997fb
       Runtime: nodejs6.10
       Policies: AmazonDynamoDBFullAccess
       Environment:
@@ -27,29 +31,49 @@ Resources:
         GetNote:
           Type: Api
           Properties:
+<<<<<<< HEAD
+=======
+            Path: /notepad/{noteId}
+>>>>>>> c227c83be7088d7aeb27b862877a5bca2f5997fb
             Method: GET
             Path: /notepad/note/{noteId}
         # GET /notepad/notes
         ListNotes:
           Type: Api
           Properties:
+<<<<<<< HEAD
+=======
+            Path: /notepad
+>>>>>>> c227c83be7088d7aeb27b862877a5bca2f5997fb
             Method: GET
             Path: /notepad/notes
         # POST /notepad/note
         CreateNote:
           Type: Api
           Properties:
+<<<<<<< HEAD
+=======
+            Path: /notepad
+>>>>>>> c227c83be7088d7aeb27b862877a5bca2f5997fb
             Method: POST
             Path: /notepad/note
         # PUT /notepad/note/{noteId}
         UpdateNote:
           Type: Api
           Properties:
+<<<<<<< HEAD
+=======
+            Path: /notepad/{noteId}
+>>>>>>> c227c83be7088d7aeb27b862877a5bca2f5997fb
             Method: PUT
             Path: /notepad/note/{noteId}
         # DELETE /notepad/note/{noteId}
         DeleteNote:
           Type: Api
           Properties:
+<<<<<<< HEAD
+=======
+            Path: /notepad/{noteId}
+>>>>>>> c227c83be7088d7aeb27b862877a5bca2f5997fb
             Method: DELETE
             Path: /notepad/note/{noteId}
