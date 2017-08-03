@@ -28,6 +28,14 @@ class NoteService {
             }
         }).promise();
     }
+
+    saveNote(noteJson) {
+        return this.docClient.put({
+            TableName: NOTES_TABLE,
+            Item: noteJson,
+            ReturnValues: 'ALL_OLD'
+        }).promise();
+    }
 }
 
 module.exports = NoteService;

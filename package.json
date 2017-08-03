@@ -2,7 +2,7 @@
   "name": "notepad-api",
   "version": "1.0.0",
   "description": "A Notepad API",
-  "main": "src/notepadApiRouter.js",
+  "main": "src/router.js",
   "scripts": {
     "build": "npm install && npm prune --production",
     "cloudformation::package": "aws cloudformation package --template-file ./sam.yaml --output-template-file ./sam-out.yaml --s3-bucket notepad-api-deployment",
