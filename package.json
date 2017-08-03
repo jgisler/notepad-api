@@ -2,12 +2,14 @@
   "name": "notepad-api",
   "version": "1.0.0",
   "description": "A Notepad API",
-  "main": "index.js",
+  "main": "src/notepadApiRouter.js",
   "scripts": {
     "build": "npm install && npm prune --production",
-    "cloudformation::package": "aws cloudformation package --template-file ./sam.yaml --output-template-file ./sam-out.yaml --s3-bucket deployer-build",
+    "cloudformation::package": "aws cloudformation package --template-file ./sam.yaml --output-template-file ./sam-out.yaml --s3-bucket notepad-api-deployment",
     "cloudformation::deploy": "aws cloudformation deploy --template-file ./sam-out.yaml --stack-name notepad-api --capabilities CAPABILITY_IAM",
-    "deploy": "npm run build && npm run cloudformation::package && npm run cloudformation::deploy"
+    "cloudformation::delete": "aws cloudformation delete-stack --stack-name notepad-api",
+    "deploy": "npm run build && npm run cloudformation::package && npm run cloudformation::deploy",
+    "delete": "npm run cloudformation::delete"
   },
   "repository": {
     "type": "git",

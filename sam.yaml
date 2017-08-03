@@ -13,38 +13,43 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
 
-  ResourceHandler:
+  NotepadApiFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.handler
+      Handler: src/notepadApiRouter.handler
       Runtime: nodejs6.10
+      Policies: AmazonDynamoDBFullAccess
       Environment:
         Variables:
           NOTES_TABLE: !Ref NotesTable
       Events:
+        # GET /notepad/note/{noteId}
         GetNote:
           Type: Api
           Properties:
-            Path: /note/{noteId}
             Method: GET
+            Path: /notepad/note/{noteId}
+        # GET /notepad/notes
         ListNotes:
           Type: Api
           Properties:
-            Path: /notes
             Method: GET
+            Path: /notepad/notes
+        # POST /notepad/note
         CreateNote:
           Type: Api
           Properties:
-            Path: /note
             Method: POST
+            Path: /notepad/note
+        # PUT /notepad/note/{noteId}
         UpdateNote:
           Type: Api
           Properties:
-            Path: /note/{noteId}
             Method: PUT
+            Path: /notepad/note/{noteId}
+        # DELETE /notepad/note/{noteId}
         DeleteNote:
           Type: Api
           Properties:
-            Path: /note/{noteId}
             Method: DELETE
-
+            Path: /notepad/note/{noteId}

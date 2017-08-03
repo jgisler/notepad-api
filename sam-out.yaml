@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  NotepadApiFunction:
+    Properties:
+      CodeUri: s3://notepad-api-deployment/f59dbb7450f9f7c2d36823d9a423007a
+      Environment:
+        Variables:
+          NOTES_TABLE:
+            Ref: NotesTable
+      Events:
+        CreateNote:
+          Properties:
+            Method: POST
+            Path: /notepad/note
+          Type: Api
+        DeleteNote:
+          Properties:
+            Method: DELETE
+            Path: /notepad/note/{noteId}
+          Type: Api
+        GetNote:
+          Properties:
+            Method: GET
+            Path: /notepad/note/{noteId}
+          Type: Api
+        ListNotes:
+          Properties:
+            Method: GET
+            Path: /notepad/notes
+          Type: Api
+        UpdateNote:
+          Properties:
+            Method: PUT
+            Path: /notepad/note/{noteId}
+          Type: Api
+      Handler: src/notepadApiRouter.handler
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: nodejs6.10
+    Type: AWS::Serverless::Function
+  NotesTable:
+    Properties:
+      PrimaryKey:
+        Name: noteId
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+    Type: AWS::Serverless::SimpleTable
+Transform: AWS::Serverless-2016-10-31
