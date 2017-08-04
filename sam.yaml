@@ -1,8 +1,26 @@
+####
+# Such great documentation, I wish JSON could do this
+#  without adding fields to the object model
+####
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+####
+# Here are some docs from AWS that helped me create this...
+#
+#  http://docs.aws.amazon.com/lambda/latest/dg/serverless-deploy-wt.html
+#  http://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html
+#  https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md
+#  http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-aws-serverless.html
+####
+
 Resources:
 
+  ###
+  # Here's my notes dynamo table, notice the name
+  #  that gets created is based on the Cloudformation
+  #  resource name.
+  ###
   NotesTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -13,22 +31,51 @@ Resources:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
 
+  ###
+  # Here is the lambda function configuration. Again,
+  #  the actual lambda name is dynamic based on the
+  #  CloudFormation resource name.
+  #
+  #  https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+  ###
   NotepadApiFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/router.handler
       Runtime: nodejs6.10
+
+      ###
+      # Set a policy for the lambda function. SAM patterns use Managed Policies
+      #  but the CloudFormation gets more complicated but not unmanagable.
+      ###
       Policies: AmazonDynamoDBFullAccess
+
+      ###
+      # Here I set an environment variable for the lambda function. Since the
+      #  table name is dynamic, I pass a reference to the NotesTable resource.
+      #  Then I can refer to this environment variable in my lambda by referencing
+      #  the global, 'process.env.NOTES_TABLE'
+      ###
       Environment:
         Variables:
           NOTES_TABLE: !Ref NotesTable
+
+      ###
+      # Here I define the event sources for the lambda function. This link
+      #  provides a list of event types from which you can trigger a lambda
+      #  function.
+      #
+      #  https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#event-source-types
+      ###
       Events:
+
         # GET /notepad/note/{noteId}
         GetNote:
-          Type: Api
+          Type: Api 
           Properties:
             Method: GET
             Path: /notepad/note/{noteId}
+
         # GET /notepad/notes
         ListNotes:
           Type: Api
@@ -36,17 +83,20 @@ Resources:
             Method: GET
             Path: /notepad/notes
         # POST /notepad/note
+
         CreateNote:
           Type: Api
           Properties:
             Method: POST
             Path: /notepad/note
+
         # PUT /notepad/note/{noteId}
         UpdateNote:
           Type: Api
           Properties:
             Method: PUT
             Path: /notepad/note/{noteId}
+
         # DELETE /notepad/note/{noteId}
         DeleteNote:
           Type: Api

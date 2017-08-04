@@ -11,6 +11,7 @@ class NoteService {
 
     static getInstance(AWS) {
         if (theInstance === undefined) {
+            console.log(`[NoteService::getInstance] Creating new instance of NoteService`);
             theInstance = new NoteService(new AWS.DynamoDB.DocumentClient());
         }
         return theInstance;
